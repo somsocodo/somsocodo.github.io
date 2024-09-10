@@ -26,15 +26,14 @@ export function SoundCloud({ trackid, style }: Props) {
 
     let timer: NodeJS.Timer | null = null;
 
-    window.addEventListener('load', ()=>{
-        const widgetIframe = document.getElementById('sc-widget') as any;
+    useEffect(()=>{
+        const widgetIframe = document.getElementById('sc-widget'+trackid) as any;
         if('SC' in window && widgetIframe){
             const SC = window.SC as any
             setWidget(SC.Widget(widgetIframe))
             setSC(SC)
         }
-
-    })
+    },[])
 
     useEffect(()=>{
         if(widget){
@@ -83,6 +82,12 @@ export function SoundCloud({ trackid, style }: Props) {
         }
     }
 
+    useEffect(()=>{
+        if(sound && paused){
+            widget.play()
+        }
+    },[sound])
+
     const formatTime = (value: number) => {
         const minute = Math.floor(value / 60);
         const secondLeft = value - minute * 60;
@@ -126,7 +131,7 @@ export function SoundCloud({ trackid, style }: Props) {
         </Grid>
         </Grid>
         <iframe 
-            id='sc-widget' 
+            id={'sc-widget'+trackid}
             allow="autoplay"
             src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`}
             hidden>
