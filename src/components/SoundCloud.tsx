@@ -1,8 +1,16 @@
 import { Button, Grid2 as Grid, Slider } from "@mui/material";
 import { useEffect, useState } from "react";
 
+interface Sound {
+    title: string
+    user: {
+        username: string
+    }
+}
+
+
 interface Props {
-    trackid: string;
+    trackid: string
     style?: React.CSSProperties
 }
 
@@ -13,6 +21,8 @@ export function SoundCloud({ trackid, style }: Props) {
     const [paused, setPaused] = useState<boolean>(true)
     const [time, setTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(0);
+
+    const [sound, setSound] = useState<Sound | undefined>();
 
     let timer: NodeJS.Timer | null = null;
 
@@ -32,6 +42,9 @@ export function SoundCloud({ trackid, style }: Props) {
                 setLoaded(true)
                 widget.getDuration((d: number)=>{
                     setDuration(Math.round((d/1000) * 100) / 100)
+                })
+                widget.getCurrentSound((s: Sound)=>{
+                    setSound(s)
                 })
             })
             widget.bind(SC.Widget.Events.PLAY, ()=>{
@@ -80,6 +93,24 @@ export function SoundCloud({ trackid, style }: Props) {
     <div className="soundcloud-player" style={style}>
         <Grid container spacing={10}>
         <Grid size="grow">
+            <p style={{paddingLeft: 10}}>{sound?.title}</p>
+            <p style={{paddingLeft: 10}}>{sound?.user.username}</p>
+        </Grid>
+        <Grid size="grow">
+            <div style={{
+                margin:'0 auto',
+                display:'block',
+                textAlign:'center'}}>
+            
+            </div>
+        </Grid>
+        <Grid size="grow">
+            <p  style={{paddingRight: 10, textAlign:'right'}}></p>
+        </Grid>
+        </Grid>
+        <Slider value={time} max={duration} onChange={(_, value) => seek(value as number)} aria-label="time-indicator"/>
+        <Grid container spacing={10}>
+        <Grid size="grow">
             <p style={{paddingLeft: 10}}>{formatTime(time)}</p>
         </Grid>
         <Grid size="grow">
@@ -94,12 +125,10 @@ export function SoundCloud({ trackid, style }: Props) {
             <p  style={{paddingRight: 10, textAlign:'right'}}>-{formatTime(duration - time)}</p>
         </Grid>
         </Grid>
-        
-        <Slider value={time} max={duration} onChange={(_, value) => seek(value as number)} aria-label="time-indicator"/>
         <iframe 
             id='sc-widget' 
             allow="autoplay"
-            src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true&visual=false`}
+            src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`}
             hidden>
         </iframe>
     </div>
