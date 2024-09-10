@@ -8,6 +8,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <SoundCloud trackid= '1565542993'/>
+    <SoundCloud 
+      trackid= '1565542993'
+      style={{width: '100%'}}
+      />
   </React.StrictMode>
 );

@@ -1,11 +1,12 @@
-import { Button, Slider } from "@mui/material";
+import { Button, Grid2 as Grid, Slider } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface Props {
     trackid: string;
+    style?: React.CSSProperties
 }
 
-export function SoundCloud({ trackid }: Props) {
+export function SoundCloud({ trackid, style }: Props) {
     const [widget, setWidget] = useState<any>(undefined)
     const [SC, setSC] = useState<any>(undefined)
     const [loaded, setLoaded] = useState<boolean>(false)
@@ -68,12 +69,33 @@ export function SoundCloud({ trackid }: Props) {
             setTime(pos)
         }
     }
+
+    const formatTime = (value: number) => {
+        const minute = Math.floor(value / 60);
+        const secondLeft = value - minute * 60;
+        return `${minute}:${secondLeft < 10 ? `0${secondLeft.toFixed(0)}` : secondLeft.toFixed(0)}`;
+    }
     
     return (
-    <div className="soundcloud-player">
-        <Button onClick={play} variant="outlined" disabled={!loaded}>{paused ? 'play' : 'pause'}</Button>
+    <div className="soundcloud-player" style={style}>
+        <Grid container spacing={10}>
+        <Grid size="grow">
+            <p style={{paddingLeft: 10}}>{formatTime(time)}</p>
+        </Grid>
+        <Grid size="grow">
+            <div style={{
+                margin:'0 auto',
+                display:'block',
+                textAlign:'center'}}>
+            <Button onClick={play} variant="outlined" disabled={!loaded}>{paused ? 'play' : 'pause'}</Button>
+            </div>
+        </Grid>
+        <Grid size="grow">
+            <p  style={{paddingRight: 10, textAlign:'right'}}>-{formatTime(duration - time)}</p>
+        </Grid>
+        </Grid>
+        
         <Slider value={time} max={duration} onChange={(_, value) => seek(value as number)} aria-label="time-indicator"/>
-        <p>{time} | -{duration - time}</p>
         <iframe 
             id='sc-widget' 
             allow="autoplay"
