@@ -10,21 +10,30 @@ interface Props {
 export function PlayList({ tracks }: Props) {
     const [track, setTrack] = useState<string>('');
 
-    useEffect(()=>{
+    useEffect(() => {
 
-    },[track])
+    }, [track])
 
-    return(
-    <div id ='soundcloud-playlist'>
-        {tracks.map((id) => {
-            return (
-                <Track trackid={id} play={setTrack} key={id}/>
-            )
-        })
-        }
-        <SoundCloud trackid={track} key={'widget-'+track}/>  
-    </div>
-    ) 
+    return (
+        <div id='soundcloud-playlist' style={{ paddingBottom: '170px' }}>
+            {tracks.map((id) => {
+                return (
+                    <Track trackid={id} play={setTrack} key={id} />
+                )
+            })
+            }
+            <div style={{
+                position: 'fixed',
+                marginTop: 10,
+                width: '100%',
+                bottom: 0
+            }}>
+                <SoundCloud trackid={track} key={'widget-' + track} style={{
+                    background: '#1719a'
+                }} />
+            </div>
+        </div>
+    )
 
-    
+
 }
