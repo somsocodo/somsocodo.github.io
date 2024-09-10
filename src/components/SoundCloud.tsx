@@ -1,5 +1,6 @@
-import { Button, Grid2 as Grid, Slider, Typography } from '@mui/material';
+import { Grid2 as Grid, IconButton, Slider, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
 
 interface Sound {
   title: string;
@@ -104,7 +105,6 @@ export function SoundCloud({ trackid }: Props) {
         container
         spacing={10}
         style={{
-          minHeight: '60px',
           backgroundImage: 'linear-gradient(transparent, #17191a, #17191a)'
         }}
       >
@@ -123,18 +123,27 @@ export function SoundCloud({ trackid }: Props) {
           onChange={(_, value) => seek(value as number)}
           aria-label="time-indicator"
         />
-        <Grid container spacing={1}>
+        <Grid
+          container
+          spacing={1}
+          style={{
+            minHeight: '70px'
+          }}
+        >
           <Grid size="auto">
-            <Button
-              style={{ marginLeft: '5px', height: '90%' }}
+            <IconButton
+              style={{ left: '10px', bottom: '2.5px', height: '90%' }}
               onClick={play}
-              variant="outlined"
               disabled={!loaded || !trackid}
             >
-              {paused ? 'play' : 'pause'}
-            </Button>
+              {paused ? (
+                <PlayArrowRounded fontSize="large" htmlColor="white" />
+              ) : (
+                <PauseRounded fontSize="large" htmlColor="white" />
+              )}
+            </IconButton>
           </Grid>
-          <Grid size="auto">
+          <Grid size="grow">
             <Typography
               component="div"
               variant="h5"
@@ -149,6 +158,18 @@ export function SoundCloud({ trackid }: Props) {
             >
               {sound?.user.username}
             </Typography>
+          </Grid>
+          <Grid display="flex" justifyContent="center" alignItems="center">
+            {' '}
+            {!trackid && (
+              <Typography
+                variant="subtitle1"
+                component="div"
+                sx={{ color: 'whitesmoke', textAlign: 'center', paddingBottom: '20px', left: 0 }}
+              >
+                {'Select "PLAY" on a song to listen.'}
+              </Typography>
+            )}
           </Grid>
           <Grid size="grow"></Grid>
         </Grid>
