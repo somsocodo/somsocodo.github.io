@@ -6,7 +6,8 @@ interface Sound {
     user: {
         username: string
     }
-    artwork_url: string
+    artwork_url: string,
+    permalink_url: string
 }
 
 
@@ -49,7 +50,7 @@ export function Track({ trackid, play, style }: Props) {
                     <CardMedia
                         component="img"
                         sx={{ width: 151 }}
-                        image={sound.artwork_url}                    
+                        image={sound.artwork_url}
                     />
                 )}
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -69,6 +70,11 @@ export function Track({ trackid, play, style }: Props) {
                         <Button onClick={() => play(trackid)}>Play</Button>
                     </Box>
                 </Box>
+
+                <a href={sound?.permalink_url ? sound?.permalink_url : 'https://soundcloud.com/'}><img
+                    style={{ position: 'absolute', right: 0, paddingTop: 10, paddingRight: 20 }}
+                    src='https://developers.soundcloud.com/assets/powered_by_white-371bd6967352fcc89673d4c81f7e5661.png'/>
+                </a>
 
             </Card>
             <iframe
