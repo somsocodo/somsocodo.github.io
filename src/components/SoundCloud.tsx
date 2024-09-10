@@ -96,48 +96,35 @@ export function SoundCloud({ trackid, style }: Props) {
 
     return (
         <div className="soundcloud-player">
-            <Grid container spacing={10} style={{ minHeight: '75px', backgroundImage: 'linear-gradient(transparent, #17191a, #17191a)' }}>
+            <Grid container spacing={10} style={{ minHeight: '60px', backgroundImage: 'linear-gradient(transparent, #17191a, #17191a)' }}>
                 <Grid size="grow">
-                    <Typography component="div" variant="h5" sx={{ color: "whitesmoke", marginLeft: '20px', paddingTop: '10px' }}>
-                        {sound?.title}
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        component="div"
-                        sx={{ color: "whitesmoke", marginLeft: '20px' }}
-                    >
-                        {sound?.user.username}
-                    </Typography>
+                    <p style={{ paddingLeft: 10 }}>{formatTime(time)}</p>
                 </Grid>
                 <Grid size="grow">
-                    <div style={{
-                        margin: '0 auto',
-                        display: 'block',
-                        textAlign: 'center'
-                    }}>
-                    </div>
                 </Grid>
                 <Grid size="grow">
-                    <p style={{ paddingRight: 10, textAlign: 'right' }}></p>
+                    <p style={{ paddingRight: 10, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
                 </Grid>
             </Grid>
             <div style={{ backgroundColor: ' #17191a' }}>
                 <Slider value={time} max={duration} onChange={(_, value) => seek(value as number)} aria-label="time-indicator" />
-                <Grid container spacing={10}>
-                    <Grid size="grow">
-                        <p style={{ paddingLeft: 10 }}>{formatTime(time)}</p>
+                <Grid container spacing={1}>
+                    <Grid size="auto">
+                        <Button style={{ marginLeft: '5px', height: '90%' }} onClick={play} variant="outlined" disabled={!loaded || !trackid}>{paused ? 'play' : 'pause'}</Button>
+                    </Grid>
+                    <Grid size="auto">
+                        <Typography component="div" variant="h5" sx={{ color: "whitesmoke", marginLeft: '20px' }}>
+                            {sound?.title}
+                        </Typography>
+                        <Typography
+                            variant="subtitle1"
+                            component="div"
+                            sx={{ color: "whitesmoke", marginLeft: '20px', paddingBottom: '10px' }}
+                        >
+                            {sound?.user.username}
+                        </Typography>
                     </Grid>
                     <Grid size="grow">
-                        <div style={{
-                            margin: '0 auto',
-                            display: 'block',
-                            textAlign: 'center'
-                        }}>
-                            <Button onClick={play} variant="outlined" disabled={!loaded}>{paused ? 'play' : 'pause'}</Button>
-                        </div>
-                    </Grid>
-                    <Grid size="grow">
-                        <p style={{ paddingRight: 10, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
                     </Grid>
                 </Grid>
             </div>
