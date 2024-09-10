@@ -17,14 +17,17 @@ interface Props {
 }
 
 export function Track({ trackid, play, style }: Props) {
-  const [widget, setWidget] = useState<any>(undefined); // eslint-disable-line @typescript-eslint/no-explicit-any
-  const [SC, setSC] = useState<any>(undefined); // eslint-disable-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line
+  const [widget, setWidget] = useState<any>(undefined);
+  // eslint-disable-next-line
+  const [SC, setSC] = useState<any>(undefined);
   const [sound, setSound] = useState<Sound | undefined>();
 
   window.addEventListener('load', () => {
     const widgetIframe = document.getElementById(`sc-track-${trackid}`);
     if ('SC' in window && widgetIframe) {
-      const SC = window.SC as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line
+      const SC = window.SC as any;
       setWidget(SC.Widget(widgetIframe));
       setSC(SC);
     }

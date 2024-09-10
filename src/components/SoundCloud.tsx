@@ -14,8 +14,10 @@ interface Props {
 }
 
 export function SoundCloud({ trackid }: Props) {
-  const [widget, setWidget] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
-  const [SC, setSC] = useState<any>(undefined); // eslint-disable-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line
+  const [widget, setWidget] = useState<any>(null);
+  // eslint-disable-next-line
+  const [SC, setSC] = useState<any>(undefined);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [paused, setPaused] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
@@ -28,7 +30,8 @@ export function SoundCloud({ trackid }: Props) {
   useEffect(() => {
     const widgetIframe = document.getElementById('sc-widget' + trackid);
     if ('SC' in window && widgetIframe) {
-      const SC = window.SC as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line
+      const SC = window.SC as any;
       setWidget(SC.Widget(widgetIframe));
       setSC(SC);
     }
