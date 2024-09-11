@@ -2,6 +2,7 @@ import { Grid2 as Grid, IconButton, Slider, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
 import { LineChart } from '@mui/x-charts';
+import { FastAverageColor } from 'fast-average-color';
 
 interface Waveform {
   height: number;
@@ -15,6 +16,8 @@ interface Sound {
     username: string;
   };
   waveform_url: string;
+  artwork_url: string;
+  colour: string;
 }
 
 interface Props {
@@ -36,6 +39,7 @@ export function SoundCloud({ trackid }: Props) {
   const [waveform, setWaveform] = useState<Waveform | undefined>();
 
   let timer: NodeJS.Timer | null = null;
+  const defaultColour = 'white';
 
   useEffect(() => {
     const widgetIframe = document.getElementById('sc-widget' + trackid);
@@ -71,7 +75,21 @@ export function SoundCloud({ trackid }: Props) {
           setDuration(Math.round((d / 1000) * 100) / 100);
         });
         widget.getCurrentSound((s: Sound) => {
-          setSound(s);
+          if (s) {
+            const fac = new FastAverageColor();
+            fac
+              .getColorAsync(s.artwork_url)
+              .then((colour) => {
+                s.colour = colour.hex;
+                console.log(s.colour);
+                setSound(s);
+              })
+              .catch((e) => {
+                console.error('Unable to fetch waveform colour', e);
+                s.colour = defaultColour;
+                setSound(s);
+              });
+          }
         });
       });
       widget.bind(SC.Widget.Events.PLAY, () => {
@@ -135,6 +153,16 @@ export function SoundCloud({ trackid }: Props) {
           leftAxis={null}
           bottomAxis={null}
           margin={{ left: 0, right: 0, bottom: 0, top: 0 }}
+          yAxis={[
+            {
+              colorMap: {
+                type: 'continuous',
+                min: 0,
+                max: waveform.height,
+                color: [sound?.colour || defaultColour, 'transparent']
+              }
+            }
+          ]}
           series={[
             {
               data: waveform.samples,
@@ -170,6 +198,7 @@ export function SoundCloud({ trackid }: Props) {
           value={time}
           max={duration}
           onChange={(_, value) => seek(value as number)}
+          sx={{ color: sound?.colour || defaultColour }}
           aria-label="time-indicator"
         />
         <Grid
