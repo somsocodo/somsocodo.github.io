@@ -150,7 +150,8 @@ export function SoundCloud({ trackid }: Props) {
         style={{
           position: 'absolute',
           width: '100%',
-          bottom: 110,
+          bottom: 100,
+          paddingBottom: 10,
           backgroundImage: 'linear-gradient(transparent, #17191a)'
         }}
       >
@@ -160,7 +161,7 @@ export function SoundCloud({ trackid }: Props) {
           </Grid>
           <Grid size="grow"></Grid>
           <Grid size="grow">
-            <p style={{ paddingRight: 10, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
+            <p style={{ paddingRight: 15, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
           </Grid>
         </Grid>
       </div>
