@@ -20,10 +20,11 @@ interface Sound {
 interface Props {
   trackid: string;
   play: React.Dispatch<React.SetStateAction<string>>;
+  playing: boolean;
   style?: React.CSSProperties;
 }
 
-export function Track({ trackid, play, style }: Props) {
+export function Track({ trackid, play, playing, style }: Props) {
   // eslint-disable-next-line
   const [widget, setWidget] = useState<any>(undefined);
   // eslint-disable-next-line
@@ -74,7 +75,11 @@ export function Track({ trackid, play, style }: Props) {
             >
               {sound ? sound?.user.username : '...'}
             </Typography>
-            <Button onClick={() => play(trackid)} style={{ width: '2vh' }} disabled={!sound}>
+            <Button
+              onClick={() => play(trackid)}
+              style={{ width: '2vh' }}
+              disabled={!sound || playing}
+            >
               Play
             </Button>
           </Grid>

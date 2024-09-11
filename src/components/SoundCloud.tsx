@@ -1,12 +1,20 @@
 import { Grid2 as Grid, IconButton, Slider, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
+import { LineChart } from '@mui/x-charts';
+
+interface Waveform {
+  height: number;
+  samples: number[];
+  width: number;
+}
 
 interface Sound {
   title: string;
   user: {
     username: string;
   };
+  waveform_url: string;
 }
 
 interface Props {
@@ -25,6 +33,7 @@ export function SoundCloud({ trackid }: Props) {
   const [duration, setDuration] = useState<number>(0);
 
   const [sound, setSound] = useState<Sound | undefined>();
+  const [waveform, setWaveform] = useState<Waveform | undefined>();
 
   let timer: NodeJS.Timer | null = null;
 
@@ -37,6 +46,22 @@ export function SoundCloud({ trackid }: Props) {
       setSC(SC);
     }
   }, []);
+
+  const loadWaveForm = async (url: string) => {
+    try {
+      fetch(url).then((res) => {
+        if (res.ok) {
+          res.json().then((wav) => {
+            setWaveform(wav);
+          });
+        } else {
+          throw new Error(`Response status: ${res.status}`);
+        }
+      });
+    } catch (error) {
+      console.error('Unable to fetch waveform', error);
+    }
+  };
 
   useEffect(() => {
     if (widget) {
@@ -90,6 +115,7 @@ export function SoundCloud({ trackid }: Props) {
   useEffect(() => {
     if (sound && paused) {
       widget.play();
+      loadWaveForm(sound.waveform_url);
     }
   }, [sound]);
 
@@ -101,22 +127,44 @@ export function SoundCloud({ trackid }: Props) {
 
   return (
     <div className="soundcloud-player">
-      <Grid
-        container
-        spacing={10}
+      {waveform?.samples && (
+        <LineChart
+          disableAxisListener
+          disableLineItemHighlight
+          tooltip={{ trigger: 'none' }}
+          leftAxis={null}
+          bottomAxis={null}
+          margin={{ left: 0, right: 0, bottom: 0, top: 0 }}
+          series={[
+            {
+              data: waveform.samples,
+              showMark: false,
+              area: true
+            }
+          ]}
+          height={window.innerHeight / 7}
+          sx={{ position: 'absolute', width: '100%', zIndex: -10, top: 15 }}
+        />
+      )}
+      <div
         style={{
-          backgroundImage: 'linear-gradient(transparent, #17191a, #17191a)'
+          position: 'absolute',
+          width: '100%',
+          bottom: 110,
+          backgroundImage: 'linear-gradient(transparent, #17191a)'
         }}
       >
-        <Grid size="grow">
-          <p style={{ paddingLeft: 10 }}>{formatTime(time)}</p>
+        <Grid container spacing={10}>
+          <Grid size="grow">
+            <p style={{ paddingLeft: 10 }}>{formatTime(time)}</p>
+          </Grid>
+          <Grid size="grow"></Grid>
+          <Grid size="grow">
+            <p style={{ paddingRight: 10, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
+          </Grid>
         </Grid>
-        <Grid size="grow"></Grid>
-        <Grid size="grow">
-          <p style={{ paddingRight: 10, textAlign: 'right' }}>-{formatTime(duration - time)}</p>
-        </Grid>
-      </Grid>
-      <div style={{ backgroundColor: ' #17191a' }}>
+      </div>
+      <div style={{ backgroundColor: '#17191a', pointerEvents: 'auto' }}>
         <Slider
           value={time}
           max={duration}

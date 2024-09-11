@@ -14,14 +14,15 @@ export function PlayList({ tracks }: Props) {
   return (
     <div id="soundcloud-playlist" style={{ paddingBottom: '170px' }}>
       {tracks.map((id) => {
-        return <Track trackid={id} play={setTrack} key={id} />;
+        return <Track trackid={id} play={setTrack} playing={id == track} key={id} />;
       })}
       <div
         style={{
           position: 'fixed',
           marginTop: 10,
           width: '100%',
-          bottom: 0
+          bottom: 0,
+          pointerEvents: 'none'
         }}
       >
         <SoundCloud
