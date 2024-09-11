@@ -7,6 +7,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface Sound {
   title: string;
@@ -30,8 +31,9 @@ export function Track({ trackid, play, playing, style }: Props) {
   // eslint-disable-next-line
   const [SC, setSC] = useState<any>(undefined);
   const [sound, setSound] = useState<Sound | undefined>();
+  const location = useLocation();
 
-  window.addEventListener('load', () => {
+  useEffect(() => {
     const widgetIframe = document.getElementById(`sc-track-${trackid}`);
     if ('SC' in window && widgetIframe) {
       // eslint-disable-next-line
@@ -39,17 +41,22 @@ export function Track({ trackid, play, playing, style }: Props) {
       setWidget(SC.Widget(widgetIframe));
       setSC(SC);
     }
-  });
+  }, [location]);
 
   useEffect(() => {
     if (widget) {
       widget.bind(SC.Widget.Events.READY, () => {
+        console.log('ready');
         widget.getCurrentSound((s: Sound) => {
           setSound(s);
         });
       });
     }
   }, [widget]);
+
+  useEffect(() => {
+    console.log(sound);
+  }, [sound]);
 
   return (
     <div className="soundcloud-track" style={style}>

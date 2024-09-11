@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { PlayList } from './components/PlayList';
-import { tracks } from './conf';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Music } from './pages/Music';
+import { NavBar } from './components/Navbar';
+import { Projects } from './pages/Projects';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <PlayList tracks={tracks} />
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Navigate to="/music" replace />} />
+        <Route path="/music" element={<Music />} />
+        <Route path="/projects" element={<Projects />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
