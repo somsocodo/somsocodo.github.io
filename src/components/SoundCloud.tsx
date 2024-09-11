@@ -146,32 +146,24 @@ export function SoundCloud({ trackid }: Props) {
           <Grid size="grow">
             <Typography
               component="div"
-              variant="h5"
+              fontSize={'3vh'}
               sx={{ color: 'whitesmoke', marginLeft: '20px' }}
+              noWrap
             >
-              {sound?.title}
+              {sound?.title ? sound?.title : 'Select a track.'}
             </Typography>
             <Typography
               variant="subtitle1"
               component="div"
+              fontSize={'2vh'}
               sx={{ color: 'whitesmoke', marginLeft: '20px', paddingBottom: '10px' }}
+              noWrap
             >
-              {sound?.user.username}
+              {sound?.user.username ? sound?.user.username : '...'}
             </Typography>
           </Grid>
-          <Grid display="flex" justifyContent="center" alignItems="center">
-            {' '}
-            {!trackid && (
-              <Typography
-                variant="subtitle1"
-                component="div"
-                sx={{ color: 'whitesmoke', textAlign: 'center', paddingBottom: '20px', left: 0 }}
-              >
-                {'Select "PLAY" on a song to listen.'}
-              </Typography>
-            )}
-          </Grid>
-          <Grid size="grow"></Grid>
+          <Grid size="auto" justifyContent="center" alignItems="center"></Grid>
+          <Grid size="auto"></Grid>
         </Grid>
       </div>
       <iframe
