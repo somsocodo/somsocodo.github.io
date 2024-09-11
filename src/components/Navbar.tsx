@@ -5,7 +5,7 @@ export function NavBar() {
   const navigate = useNavigate();
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#17191a', height: '10vh' }}>
-      <Grid container spacing={10}>
+      <Grid container spacing={'1vw'}>
         <Grid padding={'2vh'} size="auto" alignContent={'center'}>
           <Typography component="div" fontSize={'3vh'} sx={{ color: 'whitesmoke' }} noWrap>
             somsocodo.github.io
