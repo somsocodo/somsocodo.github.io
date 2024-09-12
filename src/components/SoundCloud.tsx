@@ -78,7 +78,12 @@ export function SoundCloud({ trackid }: Props) {
           if (s) {
             const fac = new FastAverageColor();
             fac
-              .getColorAsync(s.artwork_url)
+              .getColorAsync(s.artwork_url, {
+                ignoredColor: [
+                  [255, 255, 255, 255, 150],
+                  [0, 0, 0, 255, 150]
+                ]
+              })
               .then((colour) => {
                 s.colour = colour.hex;
                 console.log(s.colour);
