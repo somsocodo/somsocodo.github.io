@@ -39,7 +39,7 @@ export function Secret() {
       p5.textSize(40);
       p5.text('W + C', 10, 50);
       p5.scale(-1, 1);
-      p5.translate(-115, 0, -3);
+      p5.translate(-115, 0, -2);
       p5.text('4eva', 10, 50);
       p5.pop();
     };

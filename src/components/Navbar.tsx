@@ -70,10 +70,10 @@ export function NavBar() {
         </Grid>
         {width > 600 ? (
           routes.map((route) => {
-            const tabcol = route.route == location.pathname ? 'grey' : 'whitesmoke';
+            const tabcol = route.route == location.pathname ? 'whitesmoke' : 'grey';
             return (
               <Grid key={route.label} padding={'2vh'} size="auto" alignContent={'center'}>
-                <ListItemButton href={route.route}>
+                <ListItemButton onClick={() => navigate(route.route)}>
                   <ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>{route.icon}</ListItemIcon>
                   <ListItemText sx={{ color: tabcol }} primary={route.label} />
                 </ListItemButton>
@@ -91,10 +91,10 @@ export function NavBar() {
               <Drawer anchor={'right'} open={open} onClose={toggleDrawer(false)}>
                 <List sx={{ backgroundColor: '#17191a', height: '100%' }}>
                   {routes.map((route) => {
-                    const tabcol = route.route == location.pathname ? 'grey' : 'whitesmoke';
+                    const tabcol = route.route == location.pathname ? 'whitesmoke' : 'grey';
                     return (
                       <ListItem key={route.label} sx={{ color: tabcol }}>
-                        <ListItemButton href={route.route}>
+                        <ListItemButton onClick={() => navigate(route.route)}>
                           <ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>
                             {route.icon}
                           </ListItemIcon>
