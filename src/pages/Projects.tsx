@@ -11,7 +11,6 @@ import {
 import { Project, projects } from '../data/projects';
 
 export function Projects() {
-  console.log(projects);
   return (
     <Box overflow={'auto'}>
       <Grid container direction={'column'} spacing={3} padding={3}>

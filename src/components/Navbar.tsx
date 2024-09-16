@@ -9,10 +9,11 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  rgbToHex
 } from '@mui/material';
 import { ReactElement, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useWindowDimensions from '../helpers/windowDimensions';
 
 interface Route {
@@ -35,10 +36,20 @@ const routes: Route[] = [
 ];
 
 export function NavBar() {
+  const [secret, setSecret] = useState<number>(0);
+  const logocol = rgbToHex(`rgb(255,${255 - secret * 10},${255 - secret * 10})`);
+  const handleSecret = () => {
+    setSecret(secret + 1);
+    if (secret >= 10) {
+      setSecret(0);
+      navigate('/secret');
+    }
+  };
+
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
-
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
@@ -53,24 +64,18 @@ export function NavBar() {
           <Chip
             label={'somsocodo.github.io'}
             variant="outlined"
-            sx={{ color: 'white' }}
-            onClick={() => navigate('/')}
+            sx={{ color: logocol }}
+            onClick={handleSecret}
           />
         </Grid>
         {width > 600 ? (
           routes.map((route) => {
+            const tabcol = route.route == location.pathname ? 'grey' : 'whitesmoke';
             return (
               <Grid key={route.label} padding={'2vh'} size="auto" alignContent={'center'}>
-                <ListItemButton
-                  href={route.route}
-                  onClick={() => {
-                    navigate(route.route);
-                  }}
-                >
-                  <ListItemIcon sx={{ color: 'whitesmoke', minWidth: 30 }}>
-                    {route.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={route.label} />
+                <ListItemButton href={route.route}>
+                  <ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>{route.icon}</ListItemIcon>
+                  <ListItemText sx={{ color: tabcol }} primary={route.label} />
                 </ListItemButton>
               </Grid>
             );
@@ -86,15 +91,11 @@ export function NavBar() {
               <Drawer anchor={'right'} open={open} onClose={toggleDrawer(false)}>
                 <List sx={{ backgroundColor: '#17191a', height: '100%' }}>
                   {routes.map((route) => {
+                    const tabcol = route.route == location.pathname ? 'grey' : 'whitesmoke';
                     return (
-                      <ListItem key={route.label} sx={{ color: 'whitesmoke' }}>
-                        <ListItemButton
-                          href={route.route}
-                          onClick={() => {
-                            navigate(route.route);
-                          }}
-                        >
-                          <ListItemIcon sx={{ color: 'whitesmoke', minWidth: 30 }}>
+                      <ListItem key={route.label} sx={{ color: tabcol }}>
+                        <ListItemButton href={route.route}>
+                          <ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>
                             {route.icon}
                           </ListItemIcon>
                           <ListItemText primary={route.label} />
