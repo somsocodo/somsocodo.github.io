@@ -17,7 +17,7 @@ export const projects: Project[] = [
   {
     title: 'mem-kernel-module',
     description: 'A linux kernel module for reading usermode process memory using IOCTL.',
-    languages: ['c', 'c++'],
+    languages: ['c', 'c++', 'rust'],
     technologies: ['linux'],
     links: ['https://github.com/somsocodo/mem-kernel-module']
   },

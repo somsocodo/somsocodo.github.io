@@ -66,7 +66,7 @@ export function Track({ trackid, play, playing, style }: Props) {
             {sound?.artwork_url ? (
               <CardMedia component="img" sx={{ width: '14vh' }} image={sound.artwork_url} />
             ) : (
-              <CircularProgress size={'14vh'} />
+              <CircularProgress sx={{ color: 'rgba(209, 209, 209, 0.774)' }} size={'14vh'} />
             )}
           </Grid>
           <Grid size="grow" paddingLeft={'10px'} paddingTop={'0.5vh'}>

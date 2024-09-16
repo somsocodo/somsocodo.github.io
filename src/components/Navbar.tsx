@@ -1,6 +1,7 @@
 import { HistoryEduRounded, MenuRounded, MusicNoteRounded } from '@mui/icons-material';
 import {
   AppBar,
+  Chip,
   Drawer,
   Grid2 as Grid,
   IconButton,
@@ -8,8 +9,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemIcon,
-  ListItemText,
-  Typography
+  ListItemText
 } from '@mui/material';
 import { ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -50,9 +50,12 @@ export function NavBar() {
     >
       <Grid container spacing={'1vw'}>
         <Grid padding={'2vh'} size="auto" alignContent={'center'}>
-          <Typography component="div" sx={{ color: 'whitesmoke' }} noWrap>
-            somsocodo.github.io
-          </Typography>
+          <Chip
+            label={'somsocodo.github.io'}
+            variant="outlined"
+            sx={{ color: 'white' }}
+            onClick={() => navigate('/')}
+          />
         </Grid>
         {width > 600 ? (
           routes.map((route) => {
