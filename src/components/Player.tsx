@@ -4,7 +4,7 @@ import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
 import { Grid2 as Grid, IconButton, Slider, Typography } from '@mui/material';
 import { LineChart } from '@mui/x-charts';
 import { FastAverageColor } from 'fast-average-color';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Waveform {
 	height: number;
@@ -39,7 +39,6 @@ const Player = ({ SC, trackid }: Props) => {
 	const [widget, setWidget] = useState<any>(undefined);
 	const [waveform, setWaveform] = useState<Waveform | undefined>();
 
-	const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 	const defaultColour = 'white';
 
 	const loadWaveForm = async (url: string) => {
@@ -100,15 +99,17 @@ const Player = ({ SC, trackid }: Props) => {
 	}, [SC?.Widget.Events.PAUSE, SC?.Widget.Events.PLAY, SC?.Widget.Events.READY, widget]);
 
 	useEffect(() => {
-		if (widget && !paused && !timer.current) {
-			timer.current = setInterval(() => {
+		let timer: NodeJS.Timeout | undefined;
+
+		if (widget && !paused && !timer) {
+			timer = setInterval(() => {
 				widget.getPosition((pos: number) => {
 					setTime(Math.round((pos / 1000) * 100) / 100);
 				});
 			}, 1000);
 		}
 		return () => {
-			if (timer.current) timer.current = null;
+			if (timer) clearInterval(timer);
 		};
 	}, [paused, widget]);
 
