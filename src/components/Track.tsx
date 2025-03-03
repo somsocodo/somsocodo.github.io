@@ -17,7 +17,7 @@ interface Props {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	SC: any;
 	trackid: string;
-	play: React.Dispatch<React.SetStateAction<string>>;
+	play: React.Dispatch<React.SetStateAction<string | undefined>>;
 	playing: boolean;
 	style?: React.CSSProperties;
 }
@@ -79,7 +79,7 @@ const Track = ({ SC, trackid, play, playing, style }: Props) => {
 							>
 								<Image
 									fill
-									objectFit="contain"
+									style={{ objectFit: 'contain' }}
 									src="https://developers.soundcloud.com/assets/powered_by_white-371bd6967352fcc89673d4c81f7e5661.png"
 									alt="Powered by SoundCloud"
 								/>

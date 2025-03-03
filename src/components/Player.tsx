@@ -25,10 +25,10 @@ interface Sound {
 interface Props {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	SC: any;
-	trackid: string;
+	trackid: string | undefined;
 }
 
-const SoundCloud = ({ SC, trackid }: Props) => {
+const Player = ({ SC, trackid }: Props) => {
 	const [loaded, setLoaded] = useState<boolean>(false);
 	const [paused, setPaused] = useState<boolean>(true);
 	const [time, setTime] = useState<number>(0);
@@ -54,12 +54,12 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 				}
 			});
 		} catch (error) {
-			console.error('Unable to fetch waveform', error);
+			// console.error('Unable to fetch waveform', error);
 		}
 	};
 
 	useEffect(() => {
-		if (SC) {
+		if (SC && trackid) {
 			setWidget(SC.Widget(`sc-widget-${trackid}`));
 		}
 	}, [SC, trackid]);
@@ -84,8 +84,7 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 							.then((colour) => {
 								setSound({ ...s, colour: colour.hex });
 							})
-							.catch((e) => {
-								console.error('Unable to fetch waveform colour', e);
+							.catch(() => {
 								setSound({ ...s, colour: defaultColour });
 							});
 					}
@@ -98,7 +97,7 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 				setPaused(true);
 			});
 		}
-	}, [widget]);
+	}, [SC?.Widget.Events.PAUSE, SC?.Widget.Events.PLAY, SC?.Widget.Events.READY, widget]);
 
 	useEffect(() => {
 		if (widget && !paused && !timer.current) {
@@ -133,7 +132,7 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 			widget.play();
 			loadWaveForm(sound.waveform_url);
 		}
-	}, [sound]);
+	}, [paused, sound, widget]);
 
 	const formatTime = (value: number) => {
 		const minute = Math.floor(value / 60);
@@ -242,15 +241,17 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 					<Grid size="auto" />
 				</Grid>
 			</div>
-			<iframe
-				id={`sc-widget-${trackid}`}
-				title={`sc-widget-${trackid}`}
-				allow="autoplay"
-				src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`}
-				hidden
-			/>
+			{trackid && (
+				<iframe
+					id={`sc-widget-${trackid}`}
+					title={`sc-widget-${trackid}`}
+					allow="autoplay"
+					src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`}
+					hidden
+				/>
+			)}
 		</div>
 	);
 };
 
-export default SoundCloud;
+export default Player;

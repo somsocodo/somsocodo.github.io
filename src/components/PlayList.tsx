@@ -3,7 +3,7 @@
 import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 
-import SoundCloud from './SoundCloud';
+import Player from './Player';
 import Track from './Track';
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 const PlayList = ({ tracks }: Props) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [SC, setSC] = useState<any>(undefined);
-	const [track, setTrack] = useState<string>('');
+	const [track, setTrack] = useState<string | undefined>(undefined);
 
 	useEffect(() => {}, [track]);
 
@@ -39,7 +39,7 @@ const PlayList = ({ tracks }: Props) => {
 					pointerEvents: 'none'
 				}}
 			>
-				<SoundCloud trackid={track} key={`widget-${track}`} SC={SC} />
+				<Player trackid={track} key={`widget-${track}`} SC={SC} />
 			</div>
 		</div>
 	);
