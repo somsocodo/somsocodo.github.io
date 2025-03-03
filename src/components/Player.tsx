@@ -4,7 +4,7 @@ import { PauseRounded, PlayArrowRounded } from '@mui/icons-material';
 import { Grid2 as Grid, IconButton, Slider, Typography } from '@mui/material';
 import { LineChart } from '@mui/x-charts';
 import { FastAverageColor } from 'fast-average-color';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Waveform {
 	height: number;
@@ -30,7 +30,7 @@ interface Props {
 
 const Player = ({ SC, trackid }: Props) => {
 	const [loaded, setLoaded] = useState<boolean>(false);
-	const [paused, setPaused] = useState<boolean>(true);
+	const [paused, setPaused] = useState<boolean | undefined>(undefined);
 	const [time, setTime] = useState<number>(0);
 	const [duration, setDuration] = useState<number>(0);
 
@@ -39,7 +39,7 @@ const Player = ({ SC, trackid }: Props) => {
 	const [widget, setWidget] = useState<any>(undefined);
 	const [waveform, setWaveform] = useState<Waveform | undefined>();
 
-	const timer = React.useRef<ReturnType<typeof setInterval> | null>(null);
+	const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 	const defaultColour = 'white';
 
 	const loadWaveForm = async (url: string) => {
@@ -47,7 +47,7 @@ const Player = ({ SC, trackid }: Props) => {
 			fetch(url).then((res) => {
 				if (res.ok) {
 					res.json().then((wav) => {
-						setWaveform(wav);
+						setWaveform(wav as Waveform);
 					});
 				} else {
 					throw new Error(`Response status: ${res.status}`);
@@ -108,7 +108,7 @@ const Player = ({ SC, trackid }: Props) => {
 			}, 1000);
 		}
 		return () => {
-			if (timer.current) clearInterval(timer.current);
+			if (timer.current) timer.current = null;
 		};
 	}, [paused, widget]);
 
@@ -128,7 +128,7 @@ const Player = ({ SC, trackid }: Props) => {
 	};
 
 	useEffect(() => {
-		if (sound && paused) {
+		if (sound && paused === undefined) {
 			widget.play();
 			loadWaveForm(sound.waveform_url);
 		}
