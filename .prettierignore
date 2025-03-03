@@ -1,0 +1,10 @@
+coverage
+.next
+.github
+node_modules
+*.json
+
+#yarn2 plugnplay
+.pnp.*
+.yarn
+.yarnrc.yml
