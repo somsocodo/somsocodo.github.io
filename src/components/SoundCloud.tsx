@@ -62,7 +62,7 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 		if (SC) {
 			setWidget(SC.Widget(`sc-widget-${trackid}`));
 		}
-	}, [SC, trackid])
+	}, [SC, trackid]);
 
 	useEffect(() => {
 		if (widget) {
@@ -82,14 +82,11 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 								]
 							})
 							.then((colour) => {
-								s.colour = colour.hex;
-								console.log(s.colour);
-								setSound(s);
+								setSound({ ...s, colour: colour.hex });
 							})
 							.catch((e) => {
 								console.error('Unable to fetch waveform colour', e);
-								s.colour = defaultColour;
-								setSound(s);
+								setSound({ ...s, colour: defaultColour });
 							});
 					}
 				});
@@ -101,7 +98,6 @@ const SoundCloud = ({ SC, trackid }: Props) => {
 				setPaused(true);
 			});
 		}
-		
 	}, [widget]);
 
 	useEffect(() => {
