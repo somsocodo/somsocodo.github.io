@@ -8,12 +8,12 @@ const nextConfig: NextConfig = {
 		unoptimized: true
 	},
 	redirects: async () => [
-			{
-				source: '/',
-				destination: '/music',
-				permanent: true,
-			},
-		],
+		{
+			source: '/',
+			destination: '/music',
+			permanent: true
+		}
+	]
 };
 
 export default nextConfig;
