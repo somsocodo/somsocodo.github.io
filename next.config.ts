@@ -6,7 +6,14 @@ const nextConfig: NextConfig = {
 	reactStrictMode: true,
 	images: {
 		unoptimized: true
-	}
+	},
+	redirects: async () => [
+			{
+				source: '/',
+				destination: '/music',
+				permanent: true,
+			},
+		],
 };
 
 export default nextConfig;
