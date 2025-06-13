@@ -23,7 +23,6 @@ interface Props {
 }
 
 const Track = ({ SC, trackid, play, playing, style }: Props) => {
-	// eslint-disable-next-line
 	const [sound, setSound] = useState<Sound | undefined>();
 
 	useEffect(() => {
