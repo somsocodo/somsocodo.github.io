@@ -18,8 +18,10 @@
     "@mui/material": "^6.4.6",
     "@mui/system": "^6.4.6",
     "@mui/x-charts": "^7.27.1",
+    "@p5-wrapper/react": "^4.4.2",
     "fast-average-color": "^9.4.0",
     "next": "15.2.0",
+    "p5": "1.10.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^7.2.0"
@@ -29,6 +31,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/eslint-plugin-jsx-a11y": "^6",
     "@types/node": "^20",
+    "@types/p5": "^1.7.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^7.0.0",

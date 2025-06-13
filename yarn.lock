@@ -900,6 +900,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@p5-wrapper/react@npm:^4.4.2":
+  version: 4.4.2
+  resolution: "@p5-wrapper/react@npm:4.4.2"
+  dependencies:
+    microdiff: "npm:^1.4.0"
+    p5: "npm:^1.9.4"
+  peerDependencies:
+    react: ">= 18.2.0"
+    react-dom: ">= 18.2.0"
+  checksum: 10c0/8965407525f6c148afb0b05085341cad25004dc0f074c1521218bd40975e4acf2de8b36f3513079d8999d7aa5069b0c0dfbddc03b6d3db6d0b77cd290768c5d3
+  languageName: node
+  linkType: hard
+
 "@popperjs/core@npm:^2.11.8":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
@@ -1255,6 +1268,13 @@ __metadata:
   dependencies:
     undici-types: "npm:~6.19.2"
   checksum: 10c0/5a78f60144bd69eaf1bdce39c906d988b0dc0f4c13068af9a3c44b0df737a0f363680a97d073a45d962b061cd4b3a8cfab71eec491ca6845888b68ab7855a778
+  languageName: node
+  linkType: hard
+
+"@types/p5@npm:^1.7.6":
+  version: 1.7.6
+  resolution: "@types/p5@npm:1.7.6"
+  checksum: 10c0/92f53b7666a346a70c144fd72e09d06b9ef54a099098629717d0a70043d2ce96f1e3f49e6d36c7afa7f27ceaa4b833cca50d9d33878d201fce7105658ace0a6e
   languageName: node
   linkType: hard
 
@@ -3756,6 +3776,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"microdiff@npm:^1.4.0":
+  version: 1.5.0
+  resolution: "microdiff@npm:1.5.0"
+  checksum: 10c0/5f55ca049451d63abf79fd1692808e1052180fbedfc91d9fcab9f02df0dd902aa6a4e30199fd345d1f91982842b12d85ffa86785e38d7dbfb6d59280074f9129
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^4.0.4, micromatch@npm:^4.0.8":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
@@ -4005,6 +4032,20 @@ __metadata:
   dependencies:
     p-limit: "npm:^3.0.2"
   checksum: 10c0/2290d627ab7903b8b70d11d384fee714b797f6040d9278932754a6860845c4d3190603a0772a663c8cb5a7b21d1b16acb3a6487ebcafa9773094edc3dfe6009a
+  languageName: node
+  linkType: hard
+
+"p5@npm:1.10.0":
+  version: 1.10.0
+  resolution: "p5@npm:1.10.0"
+  checksum: 10c0/18de903cabb12b85f49608c03c59f89f0c8f1d15cd9b4b0e58f79678b29dc53a5a8b35cfbe9c8f7f6d361b2c1386b9fa57ef30ae7bcbd5a4f877d246c2e90041
+  languageName: node
+  linkType: hard
+
+"p5@npm:^1.9.4":
+  version: 1.11.8
+  resolution: "p5@npm:1.11.8"
+  checksum: 10c0/a985a6fa837cca6702c0606ac0b224c71952439bb34f13be045f22ca4cf11d121d131b785a592673c4c58e339f4909a7ee0a36c5bddb5c88a3d0c0d42036a8f0
   languageName: node
   linkType: hard
 
@@ -4637,9 +4678,11 @@ __metadata:
     "@mui/material": "npm:^6.4.6"
     "@mui/system": "npm:^6.4.6"
     "@mui/x-charts": "npm:^7.27.1"
+    "@p5-wrapper/react": "npm:^4.4.2"
     "@tailwindcss/postcss": "npm:^4"
     "@types/eslint-plugin-jsx-a11y": "npm:^6"
     "@types/node": "npm:^20"
+    "@types/p5": "npm:^1.7.6"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
     "@typescript-eslint/eslint-plugin": "npm:^7.0.0"
@@ -4656,6 +4699,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.3.0"
     fast-average-color: "npm:^9.4.0"
     next: "npm:15.2.0"
+    p5: "npm:1.10.0"
     prettier: "npm:^3.5.3"
     react: "npm:^18.0.0"
     react-dom: "npm:^18.0.0"
