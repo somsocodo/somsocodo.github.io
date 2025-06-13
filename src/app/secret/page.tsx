@@ -1,15 +1,17 @@
 'use client';
 
 /* eslint-disable no-param-reassign */
+import dynamic from 'next/dynamic';
 import P5, { Font } from 'p5';
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import useWindowDimensions from '@/helpers/windowDimensions';
 
-const Secret = () => {
-	const p5ContainerRef = useRef<HTMLDivElement>(null);
-	const p5InstanceRef = useRef<P5 | null>(null);
+const P5Wrapper = dynamic(() => import('@/components/P5Wrapper'), {
+	ssr: false
+});
 
+const Secret = () => {
 	const { width, height } = useWindowDimensions();
 
 	const heart = (p5: P5, x: number, y: number, size: number) => {
@@ -53,14 +55,7 @@ const Secret = () => {
 		[width, height]
 	);
 
-	useEffect(() => {
-		if (p5ContainerRef.current) {
-			p5InstanceRef.current?.remove();
-			p5InstanceRef.current = new P5(sketch, p5ContainerRef.current);
-		}
-	}, [sketch]);
-
-	return <div ref={p5ContainerRef} />;
+	return <P5Wrapper sketch={sketch} />;
 };
 
 export default Secret;
