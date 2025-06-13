@@ -3,6 +3,7 @@ coverage
 .github
 node_modules
 *.json
+!.eslintrc.json
 
 #yarn2 plugnplay
 .pnp.*
