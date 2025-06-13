@@ -45,7 +45,7 @@ const Projects = () => (
 										<Divider sx={{ bgcolor: 'white', opacity: 0.1 }} />
 										<Stack direction="column" spacing={2} paddingBottom={2} paddingTop={3}>
 											{project.links.map((link) => (
-												<a key={link} href={link}>
+												<a key={link} href={link} target="_blank" rel="noreferrer">
 													{link}
 												</a>
 											))}

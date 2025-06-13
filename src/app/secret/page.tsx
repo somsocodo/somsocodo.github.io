@@ -55,7 +55,11 @@ const Secret = () => {
 		[width, height]
 	);
 
-	return <P5Wrapper sketch={sketch} />;
+	return (
+		<div style={{ overflow: 'hidden', position: 'absolute', top: 0 }}>
+			<P5Wrapper sketch={sketch} />
+		</div>
+	);
 };
 
 export default Secret;

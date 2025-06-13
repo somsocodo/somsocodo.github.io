@@ -60,11 +60,11 @@ const Navbar = () => {
 	return (
 		<AppBar
 			position="sticky"
-			sx={{ backgroundColor: '#17191a', height: '30', width: '100%', overflow: 'visible' }}
+			sx={{ backgroundColor: '#17191a', maxHeight: '30', width: '100%', overflow: 'visible' }}
 		>
 			<Grid container spacing="1vw">
 				<Grid padding="2vh" size="auto" alignContent="center">
-					<Link href={secret < 10 ? pathname : '/secret'}>
+					<Link href={secret < 10 ? pathname : '/secret'} style={{ textDecoration: 'none' }}>
 						<Chip
 							label="somsocodo.github.io"
 							variant="outlined"
@@ -78,7 +78,7 @@ const Navbar = () => {
 						const tabcol = route.route === pathname ? 'whitesmoke' : 'grey';
 						return (
 							<Grid key={route.label} padding="2vh" size="auto" alignContent="center">
-								<Link href={route.route}>
+								<Link href={route.route} style={{ textDecoration: 'none' }}>
 									<ListItemButton>
 										<ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>{route.icon}</ListItemIcon>
 										<ListItemText sx={{ color: tabcol }} primary={route.label} />
@@ -101,7 +101,7 @@ const Navbar = () => {
 										const tabcol = route.route === pathname ? 'whitesmoke' : 'grey';
 										return (
 											<ListItem key={route.label} sx={{ color: tabcol }}>
-												<Link href={route.route}>
+												<Link href={route.route} style={{ textDecoration: 'none' }}>
 													<ListItemButton>
 														<ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>{route.icon}</ListItemIcon>
 														<ListItemText primary={route.label} />
