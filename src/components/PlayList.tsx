@@ -3,7 +3,6 @@
 import Script from 'next/script';
 import React, { useEffect, useState } from 'react';
 
-import Player from './Player';
 import Track from './Track';
 
 interface Props {
@@ -30,17 +29,6 @@ const PlayList = ({ tracks }: Props) => {
 			{tracks.map((id) => (
 				<Track trackid={id} play={setTrack} playing={id === track} key={id} SC={SC} />
 			))}
-			<div
-				style={{
-					position: 'fixed',
-					marginTop: 10,
-					width: '100%',
-					bottom: 0,
-					pointerEvents: 'none'
-				}}
-			>
-				<Player trackid={track} key={`widget-${track}`} SC={SC} />
-			</div>
 		</div>
 	);
 };
