@@ -104,7 +104,7 @@ const Navbar = () => {
 												<Link href={route.route} style={{ textDecoration: 'none' }}>
 													<ListItemButton>
 														<ListItemIcon sx={{ color: tabcol, minWidth: 30 }}>{route.icon}</ListItemIcon>
-														<ListItemText primary={route.label} />
+														<ListItemText sx={{ color: tabcol }} primary={route.label} />
 													</ListItemButton>
 												</Link>
 											</ListItem>
