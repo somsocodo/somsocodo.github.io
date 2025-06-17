@@ -20,5 +20,12 @@ export const projects: Project[] = [
 		languages: ['c', 'c++', 'rust'],
 		technologies: ['linux'],
 		links: ['https://github.com/somsocodo/mem-kernel-module']
+	},
+	{
+		title: 'cs2-lkm',
+		description: 'An open source cheat for Counter-Strike 2 on Linux, implementing mem-kernel-module.',
+		languages: ['rust'],
+		technologies: ['linux'],
+		links: ['https://github.com/somsocodo/cs2-lkm', 'https://github.com/somsocodo/cs2-lkm/wiki']
 	}
 ];
