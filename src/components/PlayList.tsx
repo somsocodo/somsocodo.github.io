@@ -14,7 +14,7 @@ const PlayList = ({ tracks }: Props) => {
 	const { trackid } = useMusicContext();
 
 	return (
-		<div id="soundcloud-playlist" style={{ paddingBottom: '170px' }}>
+		<div id="soundcloud-playlist">
 			{tracks.map((id) => (
 				<Track trackid={id} playing={id === trackid} key={id} />
 			))}

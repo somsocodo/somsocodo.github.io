@@ -10,7 +10,7 @@ const MusicLayout = ({
 	children: React.ReactNode;
 }>) => (
 	<MusicProvider>
-		{children}
+		<div style={{ paddingBottom: '170px' }}>{children}</div>
 		<div
 			style={{
 				position: 'fixed',
