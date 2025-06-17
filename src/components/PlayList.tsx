@@ -1,7 +1,8 @@
 'use client';
 
-import Script from 'next/script';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+import { useMusicContext } from '@/app/(music)/MusicProvider';
 
 import Track from './Track';
 
@@ -10,24 +11,12 @@ interface Props {
 }
 
 const PlayList = ({ tracks }: Props) => {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [SC, setSC] = useState<any>(undefined);
-	const [track, setTrack] = useState<string | undefined>(undefined);
-
-	useEffect(() => {}, [track]);
+	const { trackid } = useMusicContext();
 
 	return (
 		<div id="soundcloud-playlist" style={{ paddingBottom: '170px' }}>
-			<Script
-				src="soundcloud.js"
-				onLoad={() => {
-					if ('SC' in window) {
-						setSC(window.SC);
-					}
-				}}
-			/>
 			{tracks.map((id) => (
-				<Track trackid={id} play={setTrack} playing={id === track} key={id} SC={SC} />
+				<Track trackid={id} playing={id === trackid} key={id} />
 			))}
 		</div>
 	);

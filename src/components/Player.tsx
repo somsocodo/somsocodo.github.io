@@ -6,6 +6,8 @@ import { LineChart } from '@mui/x-charts';
 import { FastAverageColor } from 'fast-average-color';
 import React, { useEffect, useState } from 'react';
 
+import { useMusicContext } from '@/app/(music)/MusicProvider';
+
 interface Waveform {
 	height: number;
 	samples: number[];
@@ -22,23 +24,19 @@ interface Sound {
 	colour: string;
 }
 
-interface Props {
+const Player = () => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	SC: any;
-	trackid: string | undefined;
-}
-
-const Player = ({ SC, trackid }: Props) => {
+	const [widget, setWidget] = useState<any>(undefined);
 	const [loaded, setLoaded] = useState<boolean>(false);
 	const [paused, setPaused] = useState<boolean | undefined>(undefined);
 	const [time, setTime] = useState<number>(0);
 	const [duration, setDuration] = useState<number>(0);
-
 	const [sound, setSound] = useState<Sound | undefined>();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [widget, setWidget] = useState<any>(undefined);
 	const [waveform, setWaveform] = useState<Waveform | undefined>();
 
+	const { SCInstance: SC, trackid } = useMusicContext();
+
+	const widgetURL = `https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`;
 	const defaultColour = 'white';
 
 	const loadWaveForm = async (url: string) => {
@@ -57,38 +55,60 @@ const Player = ({ SC, trackid }: Props) => {
 		}
 	};
 
+	const onWidgetReady = React.useCallback(() => {
+		setLoaded(true);
+		if (!widget) return;
+		widget.getDuration((d: number) => {
+			setDuration(Math.round((d / 1000) * 100) / 100);
+		});
+		widget.getCurrentSound((s: Sound) => {
+			if (s) {
+				loadWaveForm(s.waveform_url);
+				const fac = new FastAverageColor();
+				fac
+					.getColorAsync(s.artwork_url, {
+						ignoredColor: [
+							[255, 255, 255, 255, 150],
+							[0, 0, 0, 255, 150]
+						]
+					})
+					.then((colour) => {
+						setSound({ ...s, colour: colour.hex });
+					})
+					.catch(() => {
+						setSound({ ...s, colour: defaultColour });
+					});
+			}
+		});
+		widget.play();
+	}, [widget, defaultColour]);
+
 	useEffect(() => {
-		if (SC && trackid) {
+		if (SC && trackid && !widget) {
+			setLoaded(false);
+			setPaused(undefined);
 			setWidget(SC.Widget(`sc-widget-${trackid}`));
+			return;
 		}
-	}, [SC, trackid]);
+
+		if (widget) {
+			widget.pause();
+			setLoaded(false);
+			setPaused(undefined);
+			setTime(0);
+			setWaveform(undefined);
+			setSound(undefined);
+			widget.load(widgetURL, {
+				autoplay: true,
+				show_artwork: true,
+				callback: onWidgetReady
+			});
+		}
+	}, [SC, trackid, widget, widgetURL, onWidgetReady]);
 
 	useEffect(() => {
 		if (widget) {
-			widget.bind(SC.Widget.Events.READY, () => {
-				setLoaded(true);
-				widget.getDuration((d: number) => {
-					setDuration(Math.round((d / 1000) * 100) / 100);
-				});
-				widget.getCurrentSound((s: Sound) => {
-					if (s) {
-						const fac = new FastAverageColor();
-						fac
-							.getColorAsync(s.artwork_url, {
-								ignoredColor: [
-									[255, 255, 255, 255, 150],
-									[0, 0, 0, 255, 150]
-								]
-							})
-							.then((colour) => {
-								setSound({ ...s, colour: colour.hex });
-							})
-							.catch(() => {
-								setSound({ ...s, colour: defaultColour });
-							});
-					}
-				});
-			});
+			widget.bind(SC.Widget.Events.READY, onWidgetReady);
 			widget.bind(SC.Widget.Events.PLAY, () => {
 				setPaused(false);
 			});
@@ -96,30 +116,21 @@ const Player = ({ SC, trackid }: Props) => {
 				setPaused(true);
 			});
 		}
-	}, [SC?.Widget.Events.PAUSE, SC?.Widget.Events.PLAY, SC?.Widget.Events.READY, widget]);
+	}, [SC?.Widget.Events.PAUSE, SC?.Widget.Events.PLAY, SC?.Widget.Events.READY, widget, onWidgetReady]);
 
 	useEffect(() => {
 		let timer: NodeJS.Timeout | undefined;
-
 		if (widget && !paused && !timer) {
 			timer = setInterval(() => {
 				widget.getPosition((pos: number) => {
-					setTime(Math.round((pos / 1000) * 100) / 100);
+					if (loaded) setTime(Math.round((pos / 1000) * 100) / 100);
 				});
 			}, 1000);
 		}
 		return () => {
 			if (timer) clearInterval(timer);
 		};
-	}, [paused, widget]);
-
-	const play = () => {
-		if (paused) {
-			widget.play();
-		} else {
-			widget.pause();
-		}
-	};
+	}, [paused, widget, loaded]);
 
 	const seek = (pos: number) => {
 		widget.seekTo(pos * 1000);
@@ -127,13 +138,6 @@ const Player = ({ SC, trackid }: Props) => {
 			setTime(pos);
 		}
 	};
-
-	useEffect(() => {
-		if (sound && paused === undefined) {
-			widget.play();
-			loadWaveForm(sound.waveform_url);
-		}
-	}, [paused, sound, widget]);
 
 	const formatTime = (value: number) => {
 		const minute = Math.floor(value / 60);
@@ -177,7 +181,7 @@ const Player = ({ SC, trackid }: Props) => {
 					position: 'absolute',
 					width: '100%',
 					bottom: 100,
-					paddingBottom: 10,
+					paddingBottom: 15,
 					backgroundImage: 'linear-gradient(transparent, #17191a)'
 				}}
 			>
@@ -209,7 +213,7 @@ const Player = ({ SC, trackid }: Props) => {
 					<Grid size="auto">
 						<IconButton
 							style={{ left: '10px', bottom: '2.5px', height: '90%' }}
-							onClick={play}
+							onClick={() => widget.toggle()}
 							disabled={!loaded || !trackid}
 						>
 							{paused ? (
@@ -226,7 +230,11 @@ const Player = ({ SC, trackid }: Props) => {
 							sx={{ color: 'whitesmoke', marginLeft: '20px' }}
 							noWrap
 						>
-							{sound?.title ? sound?.title : 'Select a track.'}
+							{(() => {
+								if (sound?.title) return sound.title;
+								if (widget) return 'Loading...';
+								return 'Select a track.';
+							})()}
 						</Typography>
 						<Typography
 							variant="subtitle1"
@@ -247,7 +255,7 @@ const Player = ({ SC, trackid }: Props) => {
 					id={`sc-widget-${trackid}`}
 					title={`sc-widget-${trackid}`}
 					allow="autoplay"
-					src={`https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/${trackid}&hide_related=true`}
+					src={`https://w.soundcloud.com/player/?url=${widgetURL}`}
 					hidden
 				/>
 			)}

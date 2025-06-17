@@ -4,6 +4,8 @@ import { Button, Card, Grid2 as Grid, CardMedia, Typography, CircularProgress } 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
+import { useMusicContext } from '@/app/(music)/MusicProvider';
+
 interface Sound {
 	title: string;
 	user: {
@@ -15,15 +17,14 @@ interface Sound {
 
 interface Props {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	SC: any;
 	trackid: string;
-	play: React.Dispatch<React.SetStateAction<string | undefined>>;
 	playing: boolean;
 	style?: React.CSSProperties;
 }
 
-const Track = ({ SC, trackid, play, playing, style }: Props) => {
+const Track = ({ trackid, playing, style }: Props) => {
 	const [sound, setSound] = useState<Sound | undefined>();
+	const { SCInstance: SC, setTrackid: play } = useMusicContext();
 
 	useEffect(() => {
 		if (SC) {
