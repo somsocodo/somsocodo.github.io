@@ -1,38 +1,25 @@
-import { useEffect, useState } from 'react';
-import { SoundCloud } from './SoundCloud';
-import { Track } from './Track';
+'use client';
+
+import React from 'react';
+
+import { useMusicContext } from '@/app/(music)/MusicProvider';
+
+import Track from './Track';
 
 interface Props {
-  tracks: string[];
+	tracks: string[];
 }
 
-export function PlayList({ tracks }: Props) {
-  const [track, setTrack] = useState<string>('');
+const PlayList = ({ tracks }: Props) => {
+	const { trackid } = useMusicContext();
 
-  useEffect(() => {}, [track]);
+	return (
+		<div id="soundcloud-playlist">
+			{tracks.map((id) => (
+				<Track trackid={id} playing={id === trackid} key={id} />
+			))}
+		</div>
+	);
+};
 
-  return (
-    <div id="soundcloud-playlist" style={{ paddingBottom: '170px' }}>
-      {tracks.map((id) => {
-        return <Track trackid={id} play={setTrack} playing={id == track} key={id} />;
-      })}
-      <div
-        style={{
-          position: 'fixed',
-          marginTop: 10,
-          width: '100%',
-          bottom: 0,
-          pointerEvents: 'none'
-        }}
-      >
-        <SoundCloud
-          trackid={track}
-          key={'widget-' + track}
-          style={{
-            background: '#1719a'
-          }}
-        />
-      </div>
-    </div>
-  );
-}
+export default PlayList;
